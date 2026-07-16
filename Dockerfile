@@ -13,17 +13,15 @@ RUN cp /app/install/package.json /app
 RUN --mount=type=cache,target=/root/.npm \
     npm install --omit=dev
 
-RUN --mount=type=secret,id=github_token \
-    --mount=type=cache,target=/root/.npm \
-    GIT_TERMINAL_PROMPT=0 \
+RUN --mount=type=cache,target=/root/.npm \
     npm i \
     nodebb-plugin-meilisearch@^0.7.3
 
-RUN --mount=type=secret,id=github_token \
+RUN --mount=type=ssh \
     --mount=type=cache,target=/root/.npm \
-    GIT_TERMINAL_PROMPT=0 \
+    GIT_SSH_COMMAND="ssh -o StrictHostKeyChecking=no" \
     npm i \
-    git+https://$(cat /run/secrets/github_token)@github.com/bangbang93/nodebb-plugin-sso-oauth.git#master
+    git+ssh://git@github.com/bangbang93/nodebb-plugin-sso-oauth.git#master
 
 FROM node:24.18.0-trixie AS runtime
 

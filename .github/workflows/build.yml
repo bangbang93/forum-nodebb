@@ -16,6 +16,14 @@ jobs:
       - name: 检出
         uses: actions/checkout@v4
 
+      - name: 设置 SSH Agent（用于拉取私有插件）
+        uses: webfactory/ssh-agent@v0.9.0
+        with:
+          ssh-private-key: ${{ secrets.SSH_DEPLOY_KEY }}
+
+      - name: 导出 SSH_AUTH_SOCK
+        run: echo "SSH_AUTH_SOCK=$SSH_AUTH_SOCK" >> $GITHUB_ENV
+
       - name: Docker meta
         id: meta
         uses: docker/metadata-action@v5
@@ -38,5 +46,5 @@ jobs:
           tags: ${{ steps.meta.outputs.tags }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
-          secrets: |
-            github_token=${{ secrets.GH_PAT || github.token }}
+          ssh: |
+            default=${{ env.SSH_AUTH_SOCK }}
