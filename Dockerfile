@@ -16,7 +16,9 @@ RUN --mount=type=cache,target=/root/.npm \
 RUN --mount=type=cache,target=/root/.npm \
     npm i \
     nodebb-plugin-meilisearch@^0.7.3 \
-    nodebb-plugin-imagemagick@^3.0.0
+    nodebb-plugin-imagemagick@^3.0.0 \
+    nodebb-plugin-cloudmusic@^0.0.1 \
+    nodebb-plugin-desktop-notifications@^0.3.3
 
 RUN --mount=type=ssh \
     --mount=type=cache,target=/root/.npm \
