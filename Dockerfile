@@ -15,7 +15,8 @@ RUN --mount=type=cache,target=/root/.npm \
 
 RUN --mount=type=cache,target=/root/.npm \
     npm i \
-    nodebb-plugin-meilisearch@^0.7.3
+    nodebb-plugin-meilisearch@^0.7.3 \
+    nodebb-plugin-imagemagick@^3.0.0
 
 RUN --mount=type=ssh \
     --mount=type=cache,target=/root/.npm \
@@ -24,6 +25,10 @@ RUN --mount=type=ssh \
     git+ssh://git@github.com/bangbang93/nodebb-plugin-sso-oauth.git#master
 
 FROM node:24.18.0-trixie AS runtime
+
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends imagemagick && \
+    rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app/
 
